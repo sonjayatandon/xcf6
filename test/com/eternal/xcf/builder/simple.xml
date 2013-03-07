@@ -1,0 +1,38 @@
+<facade>
+    <include-packages>
+    	com.eternal.stubs
+    </include-packages>
+    <add-convention>
+    	command,.CMD_
+    </add-convention>
+
+	<module name="account">
+		<operation name="login">
+		    <do instruction="process-parameter" name="user-name">
+		    	<validate with="required" />
+		    </do>
+			<do instruction="process-parameter" name="password">
+				<validate with="required" />
+			</do>
+  		   <do instruction="command" name="print-request" />
+		</operation>
+	</module>
+	
+	<response name="account" clientType="html" renderClass="JSPStub" >
+	   <renderer name="home">
+	     <jsp>/account/home.jsp</jsp>
+	   </renderer>
+	   <renderer name="login-failed">
+	     <jsp>/account/login.jsp</jsp>
+	   </renderer>
+	</response>
+	<response name="account" clientType="nio" renderClass="NIOStub" >
+	   <renderer name="home">
+	     <client-msg>account.display-home</client-msg>
+	   </renderer>
+	   <renderer name="login-failed">
+	     <client-msg>account.handle-login-failed</client-msg>
+	   </renderer>
+	</response>
+	
+</facade>

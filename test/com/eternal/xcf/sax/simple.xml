@@ -1,0 +1,17 @@
+<facade>
+	<include-packages>
+		com.eternal.saxTest
+	</include-packages>
+	<add-convention>
+		type1,.one.two.ONE_.   
+		type2 ,   .one.two.ONE_.   
+		type3.one.two.ONE_.   
+		type4,   
+	</add-convention>
+	
+	<first-tag>
+	  <second-tag>
+	  </second-tag>
+	</first-tag>
+</facade>
+

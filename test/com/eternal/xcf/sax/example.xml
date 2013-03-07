@@ -1,0 +1,62 @@
+<facade>
+
+    <include-packages>
+    	com.eternal.stub.example.account
+    </include-packages>
+
+    <!--
+       .builders ==> SAXEL_ interpreters
+       .request.parameters ==> VALIDATOR_, SETTER_
+       .request.processors ==> INSTRUCTION_, CMD_
+    -->
+    
+	<module name="account">
+	    <instruction-block name="authentication-parameters">
+			<process-parameter name="user-name">
+				<process-validator name="required" />
+			</process-parameter>
+			
+			<process-parameter name="password">
+				<process-validator name="required" />
+			</process-parameter>
+			
+			<process-parameter name="parameter-salt">
+				<execute-setter name="new-salt" />
+			</process-parameter>
+			
+			<process-parameter name="password-hash">
+				<execute-setter rule="hash">
+				    <value>$request.password</value>
+					<salt>$request.parameter-salt</salt>
+					<algorithm>SHA1</algorithm>					
+				</execute-setter>
+			</process-parameter>	    	
+	    </instruction-block>
+	    
+		<operation name="login">
+		    <process-block name="authentication-parameters" />
+		    
+		    <use-database>
+			  <execute-command name="login-user" />
+			</use-database>
+			
+		</operation>
+		
+		<operation name="register">
+		    
+		    <execute-block name="authentication-parameters" />
+		    
+		    <use-database>
+			  <process-command name="register-user" />
+			  <execute-command name="login-user" />
+			</use-database>
+			
+		</operation>
+	</module>
+	
+	<module name="workbench">
+		<before-each-operation>
+			<process-command name="authorize" />
+		</before-each-operation>
+	</module>
+</facade>
